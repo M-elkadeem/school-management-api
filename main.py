@@ -1,29 +1,24 @@
-from fastapi import FastAPI, HTTPException
-from sqlalchemy import create_engine, text
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from routers import users, classes, auth, enrollments, admin
+import os
 
-# Initialize the FastAPI app
 app = FastAPI(title="School Management API")
 
-# The connection string uses the exact credentials we set up earlier
-DATABASE_URL = "postgresql://platform_user:my_secure_password@localhost/school_db"
+# 1. Create an 'uploads' folder dynamically if it doesn't exist
+os.makedirs("uploads", exist_ok=True)
 
-# Create the database engine
-engine = create_engine(DATABASE_URL)
+# 2. Mount the folder so files can be accessed directly via URL
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
+# Connect the modular routers
+app.include_router(users.router)
+app.include_router(classes.router)
+app.include_router(auth.router)
+app.include_router(enrollments.router)
+app.include_router(admin.router)
 @app.get("/")
 def read_root():
-    return {"message": "System Online. Welcome to the API."}
+    return {"message": "System Online. Modular architecture active."}
 
-@app.get("/api/users")
-def get_all_users():
-    try:
-        # Open a connection to the database
-        with engine.connect() as connection:
-            # Execute a raw SQL query
-            result = connection.execute(text("SELECT id, name, email, role FROM users;"))
-            
-            # Format the results into a list of dictionaries
-            users = [{"id": str(row.id), "name": row.name, "email": row.email, "role": row.role} for row in result]
-            return {"status": "success", "data": users}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+app.include_router(auth.router)
