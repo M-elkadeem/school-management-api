@@ -53,7 +53,7 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-> On Windows use:
+#### On Windows use:
 
 ```bash
 venv\Scripts\activate
@@ -69,13 +69,15 @@ pip install -r requirements.txt
 
 Ensure you have PostgreSQL running locally.
 
-Create a database and run the provided SQL scripts (or use DBeaver) to establish the following tables:
+First, create a new empty database (e.g., `school_db`).
 
-* users
-* classes
-* announcements
-* attachments
-* enrollments
+Then, initialize the database schema using the provided SQL blueprint. You can do this via the command line:
+
+```bash
+psql -U your_username -d school_db -f db/init.sql
+```
+
+Alternatively, you can open the `db/init.sql` file and run it directly inside a GUI tool like DBeaver or pgAdmin.
 
 ### 5. Run the Server
 
