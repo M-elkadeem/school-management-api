@@ -29,19 +29,21 @@ class EnrollmentCreate(BaseModel):
     student_id: str
 
 # 1. Endpoint to enroll a student into a class
+# 1. Endpoint to enroll a student into a class
 @router.post("/classes/{class_id}/enroll")
 def enroll_student(class_id: str, enrollment: EnrollmentCreate, current_user_id: str = Depends(get_logged_in_user_id)):
     try:
         with engine.connect() as connection:
-            # We use ON CONFLICT DO NOTHING to prevent errors if a student is enrolled twice
+            # Swapped user_id for student_id in the INSERT and ON CONFLICT lines
             query = text("""
-                INSERT INTO enrollments (user_id, class_id)
-                VALUES (:user_id, :class_id)
-                ON CONFLICT (user_id, class_id) DO NOTHING;
+                INSERT INTO enrollments (student_id, class_id)
+                VALUES (:student_id, :class_id)
+                ON CONFLICT (student_id, class_id) DO NOTHING;
             """)
             
+            # Make sure the dictionary key matches the new variable name
             connection.execute(query, {
-                "user_id": enrollment.student_id,
+                "student_id": enrollment.student_id, 
                 "class_id": class_id
             })
             
@@ -61,7 +63,7 @@ def get_my_classes(current_user_id: str = Depends(get_logged_in_user_id)):
                 SELECT c.id, c.name, c.description
                 FROM classes c
                 JOIN enrollments e ON c.id = e.class_id
-                WHERE e.user_id = :current_user_id;
+                WHERE e.student_id = :current_user_id;
             """)
             
             result = connection.execute(query, {"current_user_id": current_user_id})
