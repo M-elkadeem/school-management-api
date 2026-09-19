@@ -1,108 +1,56 @@
 # 🏫 School Management API
 
-A robust, modular, and fully-tested RESTful API built with **FastAPI** and **PostgreSQL**. This backend engine manages school operations, handling everything from user authentication and role-based access control to relational student enrollments and secure file uploads.
+A RESTful API built with FastAPI and PostgreSQL for managing school operations — authentication, role-based access, student enrollments, and file uploads.
 
----
+## ✨ Features
 
-## ✨ Core Features
-
-* **Modular Architecture:** Cleanly separated endpoints using FastAPI Routers (`Auth`, `Admin`, `Classes`, `Enrollments`, `Users`).
-
-* **Advanced Security:**
-
-  * Password hashing via `bcrypt`
-  * Secure endpoints protected by **JWT (JSON Web Tokens)**
-  * **Role-Based Access Control (RBAC):** Strict permissions separating `ADMIN`, `TEACHER`, and `STUDENT` capabilities
-
-* **Relational Data Management:** Seamless handling of Many-to-Many relationships (e.g., enrolling students into classes) using SQLAlchemy and PostgreSQL.
-
-* **File Handling:** Built-in endpoints for teachers to upload physical files (like PDF syllabuses) and link them to class announcements.
-
-* **Performance:** Implemented query parameters for data pagination to ensure high performance at scale.
-
-* **Automated Testing:** Fully tested routes using `pytest` and `httpx`.
-
----
+- JWT authentication with role-based access control (Admin, Teacher, Student)
+- Student-class enrollment management (many-to-many relations)
+- File uploads for class materials
+- Paginated endpoints for performance
+- Full test coverage with Pytest
 
 ## 🛠️ Tech Stack
 
-* **Framework:** FastAPI
-* **Database:** PostgreSQL
-* **ORM:** SQLAlchemy
-* **Server:** Uvicorn
-* **Authentication:** Python-Jose (JWT), Passlib (Bcrypt)
-* **Testing:** Pytest
+FastAPI · PostgreSQL · SQLAlchemy · Uvicorn · JWT (Python-Jose) · Bcrypt (Passlib) · Pytest
 
----
+## 🚀 Getting Started
 
-## 🚀 Getting Started (Local Development)
-
-Follow these instructions to get a copy of the project up and running on your local machine.
-
-### 1. Clone the Repository
-
+**1. Clone the repo**
 ```bash
-git clone https://github.com/AhmedKhalifa3/school-management-api.git
-cd school-management-api
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+cd YOUR_REPO
 ```
 
-### 2. Set Up the Virtual Environment
-
+**2. Set up a virtual environment**
 ```bash
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate   # Windows: venv\Scripts\activate
 ```
 
-#### On Windows use:
-
-```bash
-venv\Scripts\activate
-```
-
-### 3. Install Dependencies
-
+**3. Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Database Setup
+**4. Set up the database**
 
-Ensure you have PostgreSQL running locally.
-
-First, create a new empty database (e.g., `school_db`).
-
-Then, initialize the database schema using the provided SQL blueprint. You can do this via the command line:
-
+Create a PostgreSQL database, then run:
 ```bash
 psql -U your_username -d school_db -f db/init.sql
 ```
 
-Alternatively, you can open the `db/init.sql` file and run it directly inside a GUI tool like DBeaver or pgAdmin.
-
-### 5. Run the Server
-
-Start the Uvicorn server with hot-reloading enabled:
-
+**5. Run the server**
 ```bash
 uvicorn main:app --reload
 ```
 
----
+## 📖 API Docs
 
-## 📖 API Documentation
+- Swagger UI: `http://localhost:8000/docs`
+- ReDoc: `http://localhost:8000/redoc`
 
-Once the server is running, FastAPI automatically generates beautiful, interactive API documentation.
-
-You can explore all endpoints, test data, and log in directly from your browser:
-
-* **Swagger UI:** `http://localhost:8000/docs`
-* **ReDoc:** `http://localhost:8000/redoc`
-
----
-
-## 🧪 Running Tests
-
-To verify the integrity of the API, run the automated test suite:
+## 🧪 Tests
 
 ```bash
 pytest -v
